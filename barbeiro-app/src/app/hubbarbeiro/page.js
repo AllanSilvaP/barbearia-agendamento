@@ -26,7 +26,7 @@ export default function hubcliente() {
                         <AgendaCliente />
                     </div>
                     <div className="w-1/4 pl-4">
-                        <BarraLateral titulo={"Barbeiro Disponível"} />
+                        <BarraLateral titulo={"Administrar"} />
                     </div>
                 </div>
             </main>
