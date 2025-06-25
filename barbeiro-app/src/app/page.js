@@ -21,8 +21,7 @@ export default function Home() {
         </section>
         <h2 className="text-center text-3xl font-bold mt-8 text-white">Barbearia Aguia Real</h2>
 
-        <div className="flex items-center gap-6 px-4 py-8">
-          {/* Imagem */}
+        <div className="flex items-center justify-center gap-6 px-4 py-8">
           <Image
             src="/HubPageBarba.jpg"
             alt="Barba"
@@ -31,27 +30,40 @@ export default function Home() {
             className="object-cover rounded-lg"
           />
 
-          {/* Barra vertical */}
           <div className="w-[10px] h-[250px] bg-white opacity-50" />
 
-          {/* Texto */}
-          <p className="max-w-2xl text-white leading-relaxed font-sans text-justify">
-            Na barbearia Águia Real, cada corte é uma experiência. Aqui, combinamos técnicas clássicas com as tendências mais atuais para valorizar o seu estilo e sua personalidade. 💈 Cortes masculinos, barba desenhada, cuidados com a pele e mais. ✂️ Atendimento personalizado em um ambiente confortável e descontraído. 📍 Visite-nos ou agende seu horário online e sinta a diferença! Seu estilo começa aqui. Agende agora e viva a experiência de um verdadeiro atendimento de barbearia.
-          </p>
+          <div className="max-w-2xl text-white font-sans text-justify">
+            <h3 className="text-xl font-bold mb-2">A Experiência Águia Real</h3>
+            <p className="leading-relaxed mb-6">
+              Na barbearia Águia Real, cada corte é uma experiência. Aqui, combinamos técnicas clássicas com as tendências mais atuais para valorizar o seu estilo e sua personalidade.
+            </p>
+
+            <h3 className="text-xl font-bold mb-2">Nossos Serviços</h3>
+            <p className="leading-relaxed mb-6">
+              💈 Cortes masculinos, barba desenhada, cuidados com a pele e mais. ✂️ Atendimento personalizado em um ambiente confortável e descontraído.
+            </p>
+
+            <h3 className="text-xl font-bold mb-2">Agende Sua Transformação</h3>
+            <p className="leading-relaxed">
+              📍 Visite-nos ou agende seu horário online e sinta a diferença! Seu estilo começa aqui. Agende agora e viva a experiência de um verdadeiro atendimento de barbearia.
+            </p>
+          </div>
         </div>
 
-        <h2 className="text-center text-3xl font-bold mt-8 text-white">Servicos</h2>
+        <div className="bg-[#545454]">
+          <h2 className="text-center text-3xl font-bold mt-8 text-white p-4">Servicos</h2>
 
-        {/* Barra horizontal */}
-        <div className="w-[300px] h-[3px] bg-white opacity-50 flex items-center" />
+          {/* Barra horizontal */}
+          <div className="w-[300px] h-[3px] bg-white opacity-50 mx-auto" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 py-8 justify-items-center">
-          <CardServico titulo={'Corte'} valor={'R$35'}/>
-          <CardServico titulo={'Barba'} valor={'R$35'}/>
-          <CardServico titulo={'Sombrancelha'} valor={'R$10'}/>
-          <CardServico titulo={'Luzes'} valor={'R$100'}/>
-          <CardServico titulo={'Alinhamento + Corte'} valor={'R$120'}/>
-          <CardServico titulo={'Descoloração'} valor={'R$200'}/>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 py-8 justify-items-center">
+            <CardServico titulo={'Corte'} valor={'R$35'} />
+            <CardServico titulo={'Barba'} valor={'R$35'} />
+            <CardServico titulo={'Sombrancelha'} valor={'R$10'} />
+            <CardServico titulo={'Luzes'} valor={'R$100'} />
+            <CardServico titulo={'Alinhamento + Corte'} valor={'R$120'} />
+            <CardServico titulo={'Descoloração'} valor={'R$200'} />
+          </div>
         </div>
       </main>
     </>
