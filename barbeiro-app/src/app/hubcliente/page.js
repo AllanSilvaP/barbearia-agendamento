@@ -1,5 +1,6 @@
 'use client'
 
+import AuthGuard from "@/components/AuthGuard";
 import Navbar from "@/components/Navbar";
 import CardAgendamento from "@/components/CardAgendamento";
 import AgendaCliente from "@/components/AgendaCliente";
@@ -8,13 +9,13 @@ import SelecionarDia from "@/components/SelecionarDias";
 
 export default function hubcliente() {
     return (
-        <>
+        <AuthGuard permitido={["Cliente","Admin"]}>
             <Navbar />
             <main className="bg-[#2E2B2A] min-h-screen text-white">
                 <h1 className="text-3xl text-center pt-8">Seja bem vindo -Usuario-</h1>
 
                 <div className="flex justify-center px-4 py-8">
-                    <SelecionarDia/>
+                    <SelecionarDia />
                 </div>
 
                 {/* Barra horizontal */}
@@ -30,6 +31,6 @@ export default function hubcliente() {
                     </div>
                 </div>
             </main>
-        </>
+        </AuthGuard>
     );
 }

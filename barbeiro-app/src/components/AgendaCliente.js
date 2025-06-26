@@ -15,7 +15,7 @@ export default function AgendaCliente() {
     return (
         <div className="bg-black text-white p-4 w-full overflow-x-auto rounded-lg">
             <h2 className="text-center text-lg mb-4">
-                {'{VARIAVEL BARBEIRO, DIA E NOME DIA}'}
+                {'VARIAVEL BARBEIRO'}
             </h2>
 
             <div className="space-y-2">

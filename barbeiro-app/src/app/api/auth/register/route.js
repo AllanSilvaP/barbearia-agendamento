@@ -1,38 +1,64 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export default async function POST(req) {
-    if(req.method !== 'POST') {
-        return Response.status(405).json({ erro: 'Método não Permitido'})
+const headers = {"Content-Type": "application/json"}
+
+export async function POST(req) {
+  const { nome, email, senha } = await req.json();
+
+  if (!nome || !email || !senha) {
+    return new Response(JSON.stringify({ erro: "Nome, email e senha são obrigatórios" }), {
+      status: 400,
+      headers,
+    });
+  }
+
+  try {
+    // Verifica se já existe um usuário com esse email
+    const existe = await prisma.usuario.findUnique({ where: { email } });
+
+    if (existe) {
+      return new Response(JSON.stringify({ erro: "Email já está em uso" }), {
+        status: 400,
+        headers,
+      });
     }
-    const {nome, email, senha} = req.body
 
-    if(!nome || !email || !senha) {
-        return Response.status(400).json({erro: 'Nome, email e senha são obrigatórios' })
-    }
+    // Criptografa a senha
+    const senha_hash = await bcrypt.hash(senha, 10);
 
-    try {
-        const existe = await prisma.usuario.findUnique({ where: {email}})
-        if (existe) {
-            return Response.status(400).json({ erro: 'Email já está em uso' })
-        }
+    // Cria o novo usuário como Cliente
+    const novoUsuario = await prisma.usuario.create({
+      data: {
+        nome,
+        email,
+        senha_hash,
+        cargo: "Cliente",
+      },
+    });
 
-        const senha_hash = await bcrypt.hash(senha,10)
-
-        const novoUsuario = await prisma.usuario.create({
-            data: {
-                nome,
-                email,
-                senha_hash,
-                cargo:'Cliente'
-            }
-        })
-
-        return Response.status(201).json({ mensagem: 'Usuário criado com sucesso'})
-    } catch (error) {
-        console.error(error)
-        return Response.status(500).json({ erro: 'Erro ao registrar usuário' })
-    }
+    return new Response(
+      JSON.stringify({
+        mensagem: "Usuário criado com sucesso",
+        usuario: {
+          id: novoUsuario.id,
+          nome: novoUsuario.nome,
+          email: novoUsuario.email,
+          cargo: novoUsuario.cargo,
+        },
+      }),
+      {
+        status: 201,
+        headers,
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return new Response(JSON.stringify({ erro: "Erro ao registrar usuário" }), {
+      status: 500,
+      headers,
+    });
+  }
 }

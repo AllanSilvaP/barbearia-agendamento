@@ -4,13 +4,15 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
+const headers = {"Content-Type": "application/json"}
+
 export async function POST(req) {
   const { email, senha } = await req.json(); // Correto no App Router
 
   if (!email || !senha) {
     return new Response(JSON.stringify({ erro: "Email e senha são obrigatórios" }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers,
     });
   }
 
@@ -20,7 +22,7 @@ export async function POST(req) {
     if (!usuario) {
       return new Response(JSON.stringify({ erro: "Usuário não encontrado" }), {
         status: 400,
-        headers: { "Content-Type": "application/json" },
+        headers,
       });
     }
 
@@ -29,7 +31,7 @@ export async function POST(req) {
     if (!senhaValida) {
       return new Response(JSON.stringify({ erro: "Senha incorreta" }), {
         status: 401,
-        headers: { "Content-Type": "application/json" },
+        headers,
       });
     }
 
@@ -56,14 +58,14 @@ export async function POST(req) {
       }),
       {
         status: 200,
-        headers: { "Content-Type": "application/json" },
+        headers,
       }
     );
   } catch (error) {
     console.error(error);
     return new Response(JSON.stringify({ erro: "Erro interno no servidor" }), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers,
     });
   }
 }

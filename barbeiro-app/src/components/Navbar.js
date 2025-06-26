@@ -2,9 +2,11 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function Navbar() {
     const [menuAberto, setMenuAberto] = useState(false)
+
     return (
         <>
             <nav className="bg-black w-full flex items-center justify-between p-4">
@@ -31,7 +33,6 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            {/* Menu lateral direita */}
             <div
                 className={`fixed top-0 right-0 h-full w-64 bg-gray-700 text-white shadow-lg z-50 transform transition-transform duration-300 ${menuAberto ? 'translate-x-0' : 'translate-x-full'
                     }`}
@@ -40,11 +41,17 @@ export default function Navbar() {
                     <button onClick={() => setMenuAberto(false)}>✕</button>
                 </div>
                 <nav className="flex flex-col items-start px-6 space-y-4 font-sans">
-                    <a href="/" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">Início</a>
+                    <Link href="/" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">
+                        Início
+                    </Link>
                     <a href="#servicos" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">Serviços</a>
                     <a href="#agendar" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">Agendar</a>
-                    <a href="/login" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">Login</a>
-                    <a href="/cadastro" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">Cadastro</a>
+                    <Link href="/login" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">
+                        Login
+                    </Link>
+                    <Link href="/cadastro" onClick={() => setMenuAberto(false)} className="hover:text-gray-300">
+                        Cadastro
+                    </Link>
                 </nav>
             </div>
         </>
