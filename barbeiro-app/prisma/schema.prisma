@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum Cargo {
+  Admin
+  Barbeiro
+  Cliente
+}
+
+model Usuario {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  email      String   @unique
+  senha_hash String
+  cargo      Cargo
+  criado_em  DateTime @default(now())
+
+  agendamentos_feitos     Agendamento[] @relation("ClienteAgendamento")
+  agendamentos_realizados Agendamento[] @relation("BarbeiroAgendamento")
+  vendas                  Venda[]
+}
+
+model Servico {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  descricao    String?
+  preco        Float
+  duracao_min  Int
+  agendamentos Agendamento[]
+}
+
+model Agendamento {
+  id          Int      @id @default(autoincrement())
+  cliente     Usuario  @relation("ClienteAgendamento", fields: [cliente_id], references: [id])
+  cliente_id  Int
+  barbeiro    Usuario  @relation("BarbeiroAgendamento", fields: [barbeiro_id], references: [id])
+  barbeiro_id Int
+  servico     Servico  @relation(fields: [servico_id], references: [id])
+  servico_id  Int
+  data_hora   DateTime
+  status      AgendamentoStatus @default(pendente)
+  observacoes String?
+}
+
+enum AgendamentoStatus {
+  pendente
+  confirmado
+  cancelado
+}
+
+model Produto {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  descricao String?
+  preco     Float
+  estoque   Int
+  itens_venda ItemVenda[]
+}
+
+model Venda {
+  id         Int      @id @default(autoincrement())
+  cliente    Usuario  @relation(fields: [cliente_id], references: [id])
+  cliente_id Int
+  data       DateTime @default(now())
+  itens      ItemVenda[]
+}
+
+model ItemVenda {
+  id             Int     @id @default(autoincrement())
+  venda          Venda   @relation(fields: [venda_id], references: [id])
+  venda_id       Int
+  produto        Produto @relation(fields: [produto_id], references: [id])
+  produto_id     Int
+  quantidade     Int
+  preco_unitario Float
+}

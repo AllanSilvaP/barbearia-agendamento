@@ -22,16 +22,15 @@ function gerarDiasProximos() {
     return dias;
 }
 
-export default function SelecionarDia() {
-    const [dias, setDias] = useState([]);
-    const [indiceSelecionado, setIndiceSelecionado] = useState(0);
+export default function SelecionarDia({ indiceSelecionado, setIndiceSelecionado, dias, setDias }) {
     const [janelaInicio, setJanelaInicio] = useState(0);
 
     useEffect(() => {
         const diasGerados = gerarDiasProximos();
         setDias(diasGerados);
-    }, []);
+    }, [setDias]);
 
+    
     const moverJanela = (direcao) => {
         setJanelaInicio((prev) => {
             if (direcao === "esquerda") return Math.max(prev - 1, 0);
@@ -40,11 +39,10 @@ export default function SelecionarDia() {
         });
     };
 
-    const diasVisiveis = dias.slice(janelaInicio, janelaInicio + 3);
+    const diasVisiveis = (dias || []).slice(janelaInicio, janelaInicio + 3);
 
     return (
         <div className="flex items-center justify-center space-x-4 py-4">
-            {/* Setinha Esquerda */}
             <button
                 onClick={() => moverJanela("esquerda")}
                 disabled={janelaInicio === 0}
@@ -53,7 +51,6 @@ export default function SelecionarDia() {
                 <ChevronLeft size={32} />
             </button>
 
-            {/* Faixa com 3 dias */}
             <div className="flex space-x-4">
                 {diasVisiveis.map((dia, index) => {
                     const indiceGlobal = janelaInicio + index;
@@ -76,7 +73,6 @@ export default function SelecionarDia() {
                 })}
             </div>
 
-            {/* Setinha Direita */}
             <button
                 onClick={() => moverJanela("direita")}
                 disabled={janelaInicio + 3 >= dias.length}
