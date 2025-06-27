@@ -1,5 +1,7 @@
 "use client"
 
+import { atualizarStatusAgendamento } from "@/services/ApiAgendamentos"
+
 export default function AgendaCliente({ barbeiroSelecionado, dataSelecionada, horarios = [] }) {
     if (!barbeiroSelecionado || !dataSelecionada) {
         return <p className="text-center">Selecione um barbeiro e uma data para ver a agenda</p>
@@ -15,6 +17,18 @@ export default function AgendaCliente({ barbeiroSelecionado, dataSelecionada, ho
         }),
     }))
 
+    async function confirmarAgendamento(id) {
+        const token = localStorage.getItem("token");
+        try {
+            await atualizarStatusAgendamento(id, "confirmado", token);
+            alert("Agendamento confirmado!");
+            location.reload(); // ou recarregue a lista de horários manualmente
+        } catch (error) {
+            console.error("Erro ao confirmar:", error);
+            alert("Erro ao confirmar agendamento");
+        }
+    }
+
 
     return (
         <div className="bg-black text-white p-4 w-full overflow-x-auto rounded-lg">
@@ -29,10 +43,19 @@ export default function AgendaCliente({ barbeiroSelecionado, dataSelecionada, ho
                             {item.hora}
                         </div>
                         <div className={`flex-1 rounded px-2 py-1 text-sm font-semibold
-        ${item.status === "cancelado" ? "bg-red-600" :
+                            ${item.status === "cancelado" ? "bg-red-600" :
                                 item.status === "confirmado" ? "bg-green-600" :
                                     "bg-yellow-500 text-black text-center"}`}>
                             {item.status.toUpperCase()}
+
+                            {item.status === "pendente" && (
+                                <button
+                                    onClick={() => confirmarAgendamento(item.id)}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-sm"
+                                >
+                                    Confirmar
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}

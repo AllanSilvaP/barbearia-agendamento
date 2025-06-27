@@ -36,3 +36,15 @@ export async function deleteUsuario(id, token) {
   })
   return res.json()
 }
+
+export async function getPerfil(token) {
+  const res = await fetch("/api/perfil", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  if (!res.ok) throw new Error("Erro ao buscar perfil")
+
+  return res.json()
+}

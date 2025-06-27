@@ -22,3 +22,17 @@ export async function getAgenda(barbeiro_id, data) {
   return res.json()
 }
 
+export async function atualizarStatusAgendamento(id, status, token) {
+  const res = await fetch(`/api/agendamentos/${id}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ status })
+  });
+
+  if (!res.ok) throw new Error("Erro ao atualizar status");
+
+  return res.json();
+}
