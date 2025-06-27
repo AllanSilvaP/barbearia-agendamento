@@ -8,28 +8,38 @@ import AgendaCliente from "@/components/AgendaCliente";
 import BarraLateral from "@/components/BarraLateral";
 import SelecionarDia from "@/components/SelecionarDias";
 import HubServicos from "@/components/HubServicos";
+import HubContas from "@/components/HubGontas";
 
 export default function hubcliente() {
 
     const [conteudo, setConteudo] = useState("Agendamentos")
+    const [indiceDiaSelecionado, setIndiceDiaSelecionado] = useState(0)
+    const [diasDisponiveis, setDiasDisponiveis] = useState([])
 
     function renderConteudo() {
         switch (conteudo) {
             case "Serviços":
-                return <HubServicos/>
+                return <HubServicos />
+            case "Contas":
+                return <HubContas />
             case "Agendamentos":
             default:
-                return <AgendaCliente/>
+                return <AgendaCliente />
         }
     }
     return (
         <AuthGuard permitido={["Admin"]}>
             <Navbar />
             <main className="bg-[#2E2B2A] min-h-screen text-white">
-                <h1 className="text-3xl text-center pt-8">Seja bem vindo -Usuario-</h1>
+                <h1 className="text-3xl text-center pt-8">Seja bem vindo</h1>
 
                 <div className="flex justify-center px-4 py-8">
-                    <SelecionarDia />
+                    <SelecionarDia
+                        indiceSelecionado={indiceDiaSelecionado}
+                        setIndiceSelecionado={setIndiceDiaSelecionado}
+                        dias={diasDisponiveis}
+                        setDias={setDiasDisponiveis}
+                    />
                 </div>
 
                 {/* Barra horizontal */}
@@ -41,10 +51,10 @@ export default function hubcliente() {
                         {renderConteudo()}
                     </div>
                     <div className="w-1/4 pl-4">
-                        <BarraLateral 
-                        titulo="Voltar"
-                        valoresBt={["Gerenciar", "Serviços", "Agendamentos"]}
-                        onBotaoClick={setConteudo}
+                        <BarraLateral
+                            titulo="Voltar"
+                            valoresBt={["Contas", "Serviços", "Agendamentos"]}
+                            onBotaoClick={setConteudo}
                         />
                     </div>
                 </div>

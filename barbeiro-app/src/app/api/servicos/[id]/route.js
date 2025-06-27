@@ -2,14 +2,13 @@ import { PrismaClient } from "@prisma/client"
 import { verify } from "jsonwebtoken"
 
 const prisma = new PrismaClient()
-const JWT_SECRET = process.env.JWT_SECRET
 
 // Atualizar serviço (só Admin)
 export async function PUT(req, { params }) {
   try {
     const authHeader = req.headers.get("authorization")
     const token = authHeader?.split(" ")[1]
-    const payload = verify(token, JWT_SECRET)
+    const payload = verify(token, process.env.JWT_SECRET)
 
     if (payload.cargo !== "Admin") {
       return Response.json({ erro: "Apenas Admins podem editar serviços" }, { status: 403 })

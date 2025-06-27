@@ -2,20 +2,18 @@ import { PrismaClient } from "@prisma/client"
 import { verify } from "jsonwebtoken"
 
 const prisma = new PrismaClient()
-const JWT_SECRET = process.env.JWT_SECRET
 
-// Listar serviços
 export async function GET() {
   const servicos = await prisma.servico.findMany()
   return Response.json(servicos)
 }
 
-// Criar novo serviço (só Admin)
 export async function POST(req) {
   try {
     const authHeader = req.headers.get("authorization")
+    if (!authHeader) throw new Error("Token não fornecido")
     const token = authHeader?.split(" ")[1]
-    const payload = verify(token, JWT_SECRET)
+    const payload = verify(token, process.env.JWT_SECRET)
 
     if (payload.cargo !== "Admin") {
       return Response.json({ erro: "Apenas Admins podem cadastrar serviços" }, { status: 403 })
